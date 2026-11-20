@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OGA NeXxt | Digital Solutions & Smart Menu Systems</title>
+  <meta name="theme-color" content="#0077ff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="OGA NeXxt" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #030b1c;
+      --bg-card: #081633;
+      --bg-card-hover: #0d2149;
+      --primary-blue: #0077ff;
+      --accent-cyan: #00e1ff;
+      --accent-green: #10b981;
+      --text-main: #ffffff;
+      --text-muted: #94a3b8;
+      --border-glass: rgba(0, 225, 255, 0.18);
+      --gradient-brand: linear-gradient(135deg, #0066ff 0%, #00e1ff 100%);
+      --gradient-green: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      line-height: 1.65;
+    }
+
+    html[dir="ltr"] body { font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif; }
+
+    /* Auto Install Prompt Banner */
+    #pwa-install-banner {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2000;
+      width: min(94%, 480px);
+      background: linear-gradient(135deg, #091d42 0%, #063740 100%);
+      border: 1.5px solid var(--accent-cyan);
+      border-radius: 20px;
+      padding: 14px 16px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 25px rgba(0, 225, 255, 0.25);
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      animation: slideUpBanner 0.45s ease;
+    }
+
+    #pwa-install-banner.show { display: flex; }
+
+    @keyframes slideUpBanner {
+      from { opacity: 0; transform: translate(-50%, 30px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    .pwa-banner-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pwa-banner-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 225, 255, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: #fff;
+    }
+
+    .pwa-banner-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .pwa-banner-text strong {
+      display: block;
+      font-size: 0.92rem;
+      color: #fff;
+    }
+
+    .pwa-banner-text span {
+      display: block;
+      font-size: 0.78rem;
+      color: #cbd5e1;
+    }
+
+    .pwa-banner-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .pwa-install-now {
+      background: var(--gradient-green);
+      color: #fff;
+      border: none;
+      padding: 0.55rem 0.95rem;
+      border-radius: 11px;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 0.84rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .pwa-close-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: #94a3b8;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    /* Splash Screen */
+    #splash-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: radial-gradient(circle at 50% 35%, #061b44 0%, #020817 80%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem 1.25rem;
+      transition: opacity 0.6s ease, transform 0.6s ease, visibility 0.6s;
+      overflow-y: auto;
+    }
+
+    #splash-screen.hidden {
+      opacity: 0;
+      transform: scale(1.04);
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-top-bar {
+      position: absolute;
+      top: 1.25rem;
+      left: 1.25rem;
+      right: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .lang-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-glass);
+      color: #fff;
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      backdrop-filter: blur(10px);
+      transition: all 0.25s ease;
+    }
+
+    .lang-btn:hover {
+      background: rgba(0, 225, 255, 0.18);
+      border-color: var(--accent-cyan);
+    }
+
+    .install-pill-btn {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid #10b981;
+      color: #6ee7b7;
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 0.88rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .main-logo-wrap {
+      margin-top: 2.5rem;
+      margin-bottom: 1.25rem;
+      animation: floatLogo 4s ease-in-out infinite;
+    }
+
+    .main-logo-img {
+      width: clamp(185px, 38vw, 255px);
+      height: auto;
+      border-radius: 28px;
+      box-shadow: 0 18px 48px rgba(0, 180, 255, 0.35);
+      border: 1.5px solid rgba(0, 225, 255, 0.35);
+      display: block;
+      margin: 0 auto;
+    }
+
+    @keyframes floatLogo {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-7px); }
+    }
+
+    .splash-badge {
+      display: inline-block;
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+      background: rgba(0, 225, 255, 0.12);
+      border: 1px solid rgba(0, 225, 255, 0.35);
+      color: var(--accent-cyan);
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .splash-title {
+      font-size: clamp(1.75rem, 4.2vw, 3rem);
+      font-weight: 900;
+      background: linear-gradient(to left, #ffffff, #7dd3fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.65rem;
+    }
+
+    .splash-sub {
+      max-width: 620px;
+      color: var(--text-muted);
+      font-size: 1.02rem;
+      margin-bottom: 2rem;
+    }
+
+    .enter-btn {
+      background: var(--gradient-brand);
+      color: #fff;
+      border: none;
+      padding: 1rem 2.75rem;
+      border-radius: 14px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 12px 32px rgba(0, 119, 255, 0.45);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.3s ease;
+    }
+
+    .enter-btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 16px 40px rgba(0, 225, 255, 0.55);
+    }
+
+    /* Main App Layout */
+    #app-container { display: none; min-height: 100vh; flex-direction: column; }
+    #app-container.visible { display: flex; }
+
+    header.top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      background: rgba(3, 11, 28, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-glass);
+      padding: 0.75rem 1.5rem;
+    }
+
+    .nav-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .brand-mini { display: flex; align-items: center; gap: 0.65rem; cursor: pointer; }
+    .brand-mini img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid rgba(0, 225, 255, 0.4);
+    }
+    .brand-mini-text { display: flex; flex-direction: column; line-height: 1.15; }
+    .brand-mini-text strong { font-size: 1.15rem; font-weight: 900; }
+    .brand-mini-text span { font-size: 0.72rem; color: var(--accent-cyan); }
+
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.35rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow-x: auto;
+      max-width: 100%;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.6rem 1.1rem;
+      border-radius: 10px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.25s ease;
+    }
+
+    .tab-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
+    .tab-btn.active { background: var(--gradient-brand); color: #fff; box-shadow: 0 4px 16px rgba(0, 119, 255, 0.4); }
+
+    main.content-area { flex: 1; max-width: 1200px; width: 100%; margin: 0 auto; padding: 2.2rem 1.25rem 5rem; }
+    .tab-panel { display: none; animation: fadeSlide 0.4s ease; }
+    .tab-panel.active { display: block; }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(0, 119, 255, 0.16) 0%, rgba(16, 185, 129, 0.12) 100%);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      padding: 2.25rem;
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 860px) { .hero-banner { grid-template-columns: 1fr; padding: 1.5rem; } }
+
+    .pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      padding: 0.3rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .hero-banner h1 { font-size: clamp(1.65rem, 3.2vw, 2.45rem); font-weight: 900; line-height: 1.3; margin-bottom: 1rem; }
+    .hero-banner p { color: #cbd5e1; font-size: 1.02rem; margin-bottom: 1.5rem; }
+    .hero-actions { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+
+    .btn-primary {
+      background: var(--gradient-brand);
+      color: #fff;
+      border: none;
+      padding: 0.8rem 1.6rem;
+      border-radius: 12px;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 119, 255, 0.45); }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      border: 1px solid var(--border-glass);
+      padding: 0.8rem 1.5rem;
+      border-radius: 12px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.12); border-color: var(--accent-cyan); }
+
+    .phone-frame {
+      width: 270px;
+      margin: 0 auto;
+      background: #050f24;
+      border: 3px solid #1e3a8a;
+      border-radius: 34px;
+      padding: 14px;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.65), 0 0 30px rgba(0, 225, 255, 0.18);
+    }
+
+    .phone-screen { background: #0b1938; border-radius: 22px; padding: 14px; overflow: hidden; }
+    .phone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #0284c7, #10b981);
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .menu-demo-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 8px 10px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 0.82rem;
+    }
+
+    .menu-demo-price { color: #34d399; font-weight: 800; }
+
+    .qr-install-strip {
+      margin-top: 10px;
+      background: rgba(0, 225, 255, 0.12);
+      border: 1px dashed var(--accent-cyan);
+      border-radius: 10px;
+      padding: 8px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      font-weight: 700;
+    }
+
+    .section-head { text-align: center; margin-bottom: 2rem; }
+    .section-head h2 { font-size: clamp(1.5rem, 2.8vw, 2.15rem); font-weight: 900; margin-bottom: 0.5rem; }
+    .section-head p { color: var(--text-muted); max-width: 650px; margin: 0 auto; }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.35rem; }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 1.65rem;
+      transition: all 0.25s ease;
+    }
+
+    .feature-card:hover { background: var(--bg-card-hover); border-color: var(--accent-cyan); transform: translateY(-4px); }
+
+    .icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(0, 225, 255, 0.12);
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.45rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .feature-card p { color: var(--text-muted); font-size: 0.93rem; }
+
+    .pwa-spotlight {
+      background: linear-gradient(135deg, #06283d 0%, #064e3b 100%);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      border-radius: 22px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .pwa-spotlight h3 { font-size: 1.4rem; font-weight: 900; color: #6ee7b7; margin-bottom: 0.45rem; }
+    .pwa-spotlight p { max-width: 720px; color: #e2e8f0; }
+
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.75rem; margin-bottom: 2.5rem; }
+
+    .price-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .price-card.featured { border: 2px solid var(--accent-green); box-shadow: 0 18px 44px rgba(16, 185, 129, 0.16); }
+
+    .price-badge { display: inline-block; padding: 0.35rem 0.95rem; border-radius: 999px; font-size: 0.82rem; font-weight: 800; margin-bottom: 0.85rem; width: fit-content; }
+    .badge-blue { background: rgba(0, 119, 255, 0.2); color: #60a5fa; }
+    .badge-green { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .price-amount { font-size: 2.15rem; font-weight: 900; margin: 0.4rem 0; color: #fff; }
+    .price-note { color: var(--accent-cyan); font-size: 0.9rem; font-weight: 700; margin-bottom: 1.35rem; }
+
+    .check-list { list-style: none; margin-bottom: 1.5rem; flex: 1; }
+    .check-list li { padding: 0.45rem 0; display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.94rem; color: #e2e8f0; }
+    .check-icon { color: #10b981; font-weight: 900; }
+
+    .policy-box {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 14px;
+      padding: 1rem;
+      font-size: 0.86rem;
+      color: #cbd5e1;
+      margin-bottom: 1.35rem;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .table-wrap { overflow-x: auto; background: var(--bg-card); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 2rem; }
+    table { width: 100%; border-collapse: collapse; text-align: center; }
+    th, td { padding: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.07); font-size: 0.94rem; }
+    th { background: rgba(0, 119, 255, 0.22); font-weight: 800; color: #fff; }
+    th:first-child, td:first-child { text-align: start; font-weight: 700; }
+
+    .terms-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 1.75rem; }
+    .terms-card h3 { margin-bottom: 1rem; color: var(--accent-cyan); }
+    .terms-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+    .term-item { background: rgba(255, 255, 255, 0.03); padding: 1rem; border-radius: 14px; display: flex; gap: 0.75rem; align-items: flex-start; font-size: 0.9rem; }
+    .term-num { background: var(--primary-blue); color: #fff; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; font-size: 0.82rem; }
+
+    .contact-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 2rem; }
+    @media (max-width: 820px) { .contact-grid { grid-template-columns: 1fr; } }
+
+    .form-card, .direct-card { background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 2rem; }
+    .form-group { margin-bottom: 1.15rem; }
+    .form-group label { display: block; font-weight: 700; margin-bottom: 0.45rem; font-size: 0.92rem; }
+    .form-control { width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 0.8rem 1rem; color: #fff; font-family: inherit; font-size: 0.95rem; }
+    .form-control:focus { outline: none; border-color: var(--accent-cyan); }
+    .form-control option { background: #081633; color: #fff; }
+
+    .whatsapp-btn {
+      width: 100%;
+      background: var(--gradient-green);
+      color: #fff;
+      border: none;
+      padding: 0.95rem 1.5rem;
+      border-radius: 14px;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      box-shadow: 0 10px 26px rgba(16, 185, 129, 0.35);
+      transition: transform 0.2s ease;
+    }
+
+    .whatsapp-btn:hover { transform: translateY(-2px); }
+
+    footer { border-top: 1px solid rgba(255, 255, 255, 0.08); padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.88rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Auto-Install App Banner (Uses First Image as App Icon) -->
+  <div id="pwa-install-banner">
+    <div class="pwa-banner-info">
+      <div class="pwa-banner-icon">
+        <img src="icon-192.png" alt="OGA NeXxt" />
+      </div>
+      <div class="pwa-banner-text">
+        <strong data-i18n="pwaBannerTitle">تثبيت تطبيق OGA NeXxt</strong>
+        <span data-i18n="pwaBannerSub">أضف التطبيق للشاشة الرئيسية للوصول السريع</span>
+      </div>
+    </div>
+    <div class="pwa-banner-actions">
+      <button class="pwa-install-now" onclick="triggerInstallApp()" data-i18n="pwaBannerBtn">تثبيت الآن</button>
+      <button class="pwa-close-btn" onclick="dismissInstallBanner()">✕</button>
+    </div>
+  </div>
+
+  <!-- 1. Splash Welcome Screen (Shows Second Image Directly Upon Opening Link) -->
+  <section id="splash-screen">
+    <div class="splash-top-bar">
+      <button class="install-pill-btn" onclick="triggerInstallApp()" id="splash-install-btn">
+        📲 <span data-i18n="installAppBtn">تثبيت التطبيق على الشاشة</span>
+      </button>
+      <button class="lang-btn" onclick="toggleLanguage()" id="splash-lang-btn">
+        🌐 English
+      </button>
+    </div>
+
+    <div class="main-logo-wrap">
+      <img src="logo-main.png" alt="OGA NeXxt Logo" class="main-logo-img" />
+    </div>
+
+    <span class="splash-badge" data-i18n="splashBadge">OGA NeXxt — حلول رقمية وأنظمة المنيو الذكي</span>
+    <h1 class="splash-title" data-i18n="splashTitle">مرحباً بك في عالم المنيو الذكي</h1>
+    <p class="splash-sub" data-i18n="splashSub">
+      نحو تجربة رقمية أكثر احترافية وسهولة لنشاطك التجاري — حول قائمة طعامك أو خدماتك إلى تطبيق تفاعلي يثبته عميلك على هاتفه من أول مسحة كود.
+    </p>
+
+    <button class="enter-btn" onclick="enterApp()">
+      <span data-i18n="enterBtn">دخول واستكشاف المنصة</span>
+      <span>➔</span>
+    </button>
+  </section>
+
+  <!-- 2. Main Application -->
+  <div id="app-container">
+    <header class="top-nav">
+      <div class="nav-inner">
+        <div class="brand-mini" onclick="backToSplash()">
+          <img src="logo-mini.png" alt="OGA NeXxt" />
+          <div class="brand-mini-text">
+            <strong>OGA NeXxt</strong>
+            <span data-i18n="brandTagline">أنظمة المنيو الذكي</span>
+          </div>
+        </div>
+
+        <nav class="nav-tabs" role="tablist">
+          <button class="tab-btn active" onclick="switchTab('identity', this)" data-i18n="tab1">1. هوية الخدمة</button>
+          <button class="tab-btn" onclick="switchTab('features', this)" data-i18n="tab2">2. مميزات التطبيق والمنيو</button>
+          <button class="tab-btn" onclick="switchTab('pricing', this)" data-i18n="tab3">3. الباقات والأسعار</button>
+          <button class="tab-btn" onclick="switchTab('contact', this)" data-i18n="tab4">4. اطلب خدمتك وتواصل معنا</button>
+        </nav>
+
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <button class="install-pill-btn" onclick="triggerInstallApp()">
+            📲 <span data-i18n="installShort">تثبيت</span>
+          </button>
+          <button class="lang-btn" onclick="toggleLanguage()" id="nav-lang-btn">
+            🌐 English
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="content-area">
+
+      <!-- TAB 1: Service Identity -->
+      <section id="tab-identity" class="tab-panel active">
+        <div class="hero-banner">
+          <div>
+            <span class="pill-tag" data-i18n="heroBadge">✨ تصميم وتنفيذ المنيو الإلكتروني وأنظمة الإدارة</span>
+            <h1 data-i18n="heroTitle">حلول رقمية متكاملة تجعل نشاطك التجاري في جيب عميلك دائماً</h1>
+            <p data-i18n="heroDesc">
+              في OGA NeXxt نقدم لك نظام منيو إلكتروني ذكي يعمل كتطبيق متكامل على هاتف العميل بمجرد مسح رمز QR لأول مرة، مع تصميم احترافي يعكس قوة علامتك التجارية ويسرّع عملية الطلب.
+            </p>
+            <div class="hero-actions">
+              <button class="btn-primary" onclick="goToTab('pricing')" data-i18n="heroCta1">استعرض الباقات والأسعار</button>
+              <button class="btn-outline" onclick="triggerInstallApp()" data-i18n="heroCta2">📲 تثبيت التطبيق على هاتفك</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="phone-frame">
+              <div class="phone-screen">
+                <div class="phone-header">
+                  <span data-i18n="mockTitle">قائمة الطعام الذكية</span>
+                  <span>OGA NeXxt</span>
+                </div>
+                <div class="menu-demo-item">
+                  <span data-i18n="mockItem1">🍔 برجر كلاسيك دبل</span>
+                  <span class="menu-demo-price">145 EGP</span>
+                </div>
+                <div class="menu-demo-item">
+                  <span data-i18n="mockItem2">🍕 بيتزا سوبريم</span>
+                  <span class="menu-demo-price">190 EGP</span>
+                </div>
+                <div class="menu-demo-item">
+                  <span data-i18n="mockItem3">🥤 موهيتو باشن فروت</span>
+                  <span class="menu-demo-price">65 EGP</span>
+                </div>
+                <div class="qr-install-strip" data-i18n="mockInstall">
+                  📲 تم تثبيت أيقونة المنيو على شاشة هاتف العميل!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="icon-box">🎯</div>
+            <h3 data-i18n="idCard1Title">هوية بصرية تخطف الأنظار</h3>
+            <p data-i18n="idCard1Desc">تصميم واجهة المنيو بألوان وشعار مطعمك أو متجرك بدقة عالية وتنظيم احترافي للأقسام والصور والأسعار.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon-box">⚡</div>
+            <h3 data-i18n="idCard2Title">سرعة فائقة وتجربة سلسة</h3>
+            <p data-i18n="idCard2Desc">تصفح فوري بدون انتظار تحميل ملفات PDF ثقيلة، ومتوافق بنسبة 100% مع جميع هواتف الأندرويد والآيفون.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon-box">🚀</div>
+            <h3 data-i18n="idCard3Title">Your Business, One Step Ahead</h3>
+            <p data-i18n="idCard3Desc">نمنح نشاطك التجاري ميزة تنافسية حديثة ترفع من قيمة العلامة التجارية وتزيد معدل تكرار الطلبات من عملائك.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: Features -->
+      <section id="tab-features" class="tab-panel">
+        <div class="section-head">
+          <h2 data-i18n="featHead">لماذا المنيو الإلكتروني بتقنية التطبيق من OGA NeXxt؟</h2>
+          <p data-i18n="featSub">حوّل كل زائر يمسح الكود إلى عميل دائم يحتفظ بتطبيقك على شاشة هاتفه الرئيسية.</p>
+        </div>
+
+        <div class="pwa-spotlight">
+          <div>
+            <h3 data-i18n="pwaTitle">📲 ميزة التثبيت المباشر: خليك في جيب عميلك في كل وقت!</h3>
+            <p data-i18n="pwaDesc">
+              بمجرد أن يقوم عميلك بعمل Scan لكود الـ QR لأول مرة، يظهر له خيار تثبيت المنيو كتطبيق مباشر على شاشة هاتفه بأيقونة واسم نشاطك التجاري — ليفتح قائمتك ويطلب منك في أي وقت بلمسة واحدة دون الحاجة للبحث عن رابط أو إعادة مسح الكود.
+            </p>
+          </div>
+          <button class="btn-primary" onclick="goToTab('contact')" data-i18n="pwaBtn">اطلب تطبيقك الآن</button>
+        </div>
+
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="icon-box">📱</div>
+            <h3 data-i18n="f1Title">تطبيق خفيف بدون متاجر معقدة</h3>
+            <p data-i18n="f1Desc">يعمل بتقنية الويب التقدمي (PWA)؛ يُثبّت في ثوانٍ معدودة دون استهلاك مساحة تخزين الهاتف أو الحاجة لتحميل من المتاجر.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon-box">🗂️</div>
+            <h3 data-i18n="f2Title">تقسيم احترافي للأقسام والمنتجات</h3>
+            <p data-i18n="f2Desc">عرض منظم للأصناف مع صور عالية الجودة، وصف دقيق للمكونات، والأسعار المحدثة بشكل واضح وجذاب.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon-box">🔗</div>
+            <h3 data-i18n="f3Title">رابط إلكتروني + كود QR مخصص</h3>
+            <p data-i18n="f3Desc">تحصل على رابط مباشر للمشاركة على فيسبوك وإنستجرام وواتساب، بالإضافة إلى كود QR جاهز للطباعة على الطاولات.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon-box">🎛️</div>
+            <h3 data-i18n="f4Title">لوحة تحكم شاملة (في الباقة الثانية)</h3>
+            <p data-i18n="f4Desc">إمكانية إضافة أصناف جديدة، تعديل الأسعار والصور، أو إخفاء الأصناف غير المتوفرة بنفسك في أي لحظة.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon-box">💬</div>
+            <h3 data-i18n="f5Title">طلب مباشر وسريع</h3>
+            <p data-i18n="f5Desc">تسهيل وصول العميل إليك وطلب الأصناف مباشرة مما يقلل أخطاء المكالمات الهاتفية ويزيد المبيعات.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon-box">🛡️</div>
+            <h3 data-i18n="f6Title">استقرار وأداء عالي</h3>
+            <p data-i18n="f6Desc">استضافة سريعة وموثوقة تضمن عمل المنيو بكفاءة تامة في أوقات الذروة وازدحام الطلبات.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: Pricing -->
+      <section id="tab-pricing" class="tab-panel">
+        <div class="section-head">
+          <h2 data-i18n="priceHead">باقات تصميم وتنفيذ المنيو الإلكتروني</h2>
+          <p data-i18n="priceSub">اختر الباقة الأنسب لحجم نشاطك التجاري — دفعة واحدة بدون اشتراكات شهرية إجبارية.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <div class="price-card">
+            <span class="price-badge badge-blue" data-i18n="pkg1Badge">الباقة الأولى | المنيو الإلكتروني</span>
+            <div class="price-amount" data-i18n="pkg1Price">3,500 جنيه مصري</div>
+            <div class="price-note" data-i18n="pkg1Note">دفعة واحدة — تسليم جاهز للاستخدام</div>
+
+            <ul class="check-list">
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg1F1">تصميم وتنفيذ منيو إلكتروني احترافي متكامل.</span></li>
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg1F2">تقسيم المنتجات إلى أقسام منظمة وسهلة التصفح.</span></li>
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg1F3">إضافة الأصناف والأسعار والصور والتفاصيل بدقة.</span></li>
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg1F4">تصميم متوافق مع جميع الهواتف المحمولة وقابل للتثبيت كتطبيق.</span></li>
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg1F5">توفير رابط إلكتروني خاص بالمنيو.</span></li>
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg1F6">إنشاء كود QR للوصول إلى المنيو بسهولة.</span></li>
+            </ul>
+
+            <div class="policy-box">
+              <strong data-i18n="pkg1PolicyTitle">🔧 سياسة الصيانة والتحديث:</strong><br/>
+              <span data-i18n="pkg1PolicyDesc">بعد التسليم، يتم احتساب 150 جنيهاً لكل مرة صيانة أو تحديث بسيط (تعديل أسعار، إضافة/حذف صنف، تغيير صور أو أقسام). التطوير البرمجي الجديد يُسعّر بشكل منفصل.</span>
+            </div>
+
+            <button class="btn-primary" style="width:100%; justify-content:center;" onclick="selectPackageOrder('الباقة الأولى - المنيو الإلكتروني (3,500 ج.م)')" data-i18n="orderPkg1">
+              اطلب الباقة الأولى الآن
+            </button>
+          </div>
+
+          <div class="price-card featured">
+            <span class="price-badge badge-green" data-i18n="pkg2Badge">⭐ الباقة الثانية | المنيو الإلكتروني + لوحة التحكم</span>
+            <div class="price-amount" data-i18n="pkg2Price">8,000 جنيه مصري</div>
+            <div class="price-note" data-i18n="pkg2Note">دفعة واحدة — تحكم كامل 100% بدون رسوم صيانة</div>
+
+            <ul class="check-list">
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg2F1">تشمل جميع مميزات الباقة الأولى بالكامل.</span></li>
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg2F2">لوحة تحكم (Dashboard) خاصة بنشاطك التجاري.</span></li>
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg2F3">إضافة أصناف جديدة وحذف الأصناف القديمة بنفسك.</span></li>
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg2F4">تعديل الأسعار والصور والتفاصيل في أي لحظة.</span></li>
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg2F5">إضافة وتعديل وحذف أقسام المنيو بحرية تامة.</span></li>
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg2F6">تحديث المنيو بنفسك في أي وقت دون الحاجة للرجوع لفريق OGA NeXxt.</span></li>
+            </ul>
+
+            <div class="policy-box">
+              <strong data-i18n="pkg2PolicyTitle">💡 مميزات هذه الباقة:</strong><br/>
+              <span data-i18n="pkg2PolicyDesc">تحصل على نظام متكامل يمنحك التحكم الكامل ويوفر عليك تكاليف الصيانة المتكررة للتعديلات البسيطة (بدون أي رسوم عند تنفيذها بنفسك).</span>
+            </div>
+
+            <button class="whatsapp-btn" onclick="selectPackageOrder('الباقة الثانية - المنيو الإلكتروني + لوحة التحكم (8,000 ج.م)')" data-i18n="orderPkg2">
+              اطلب الباقة الثانية المتكاملة
+            </button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th data-i18n="compCol1">التفاصيل والمميزات</th>
+                <th data-i18n="compCol2">الباقة الأولى (المنيو فقط)</th>
+                <th data-i18n="compCol3">الباقة الثانية (المنيو + الداش بورد)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td data-i18n="compR1">تصميم وتنفيذ المنيو</td><td>✔</td><td>✔</td></tr>
+              <tr><td data-i18n="compR2">رابط إلكتروني مخصص</td><td>✔</td><td>✔</td></tr>
+              <tr><td data-i18n="compR3">QR Code جاهز للطباعة</td><td>✔</td><td>✔</td></tr>
+              <tr><td data-i18n="compR4">إدارة الأصناف بنفسك</td><td>✖</td><td>✔</td></tr>
+              <tr><td data-i18n="compR5">تعديل الأسعار بنفسك</td><td>✖</td><td>✔</td></tr>
+              <tr><td data-i18n="compR6">إدارة الأقسام بنفسك</td><td>✖</td><td>✔</td></tr>
+              <tr>
+                <td data-i18n="compR7">صيانة التعديلات البسيطة</td>
+                <td data-i18n="compR7V1">150 جنيهاً للمرة</td>
+                <td data-i18n="compR7V2">بدون رسوم عند تنفيذها بنفسك</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="terms-card">
+          <h3 data-i18n="termsTitle">📋 شروط الاتفاق والتنفيذ</h3>
+          <div class="terms-list">
+            <div class="term-item"><span class="term-num">1</span><span data-i18n="term1">الأسعار الموضحة تشمل تنفيذ وتسليم المميزات المذكورة في كل باقة.</span></div>
+            <div class="term-item"><span class="term-num">2</span><span data-i18n="term2">يتم الاتفاق على تفاصيل المنيو والأقسام والمحتوى قبل بدء التنفيذ.</span></div>
+            <div class="term-item"><span class="term-num">3</span><span data-i18n="term3">أي طلبات إضافية خارج نطاق الباقة يتم الاتفاق على تكلفتها بشكل منفصل قبل تنفيذها.</span></div>
+            <div class="term-item"><span class="term-num">4</span><span data-i18n="term4">يتم تسليم المشروع بعد الانتهاء من التنفيذ والمراجعة والاعتماد.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: Contact -->
+      <section id="tab-contact" class="tab-panel">
+        <div class="section-head">
+          <h2 data-i18n="contactHead">اطلب خدمتك الآن وتواصل مع فريق OGA NeXxt</h2>
+          <p data-i18n="contactSub">املأ بيانات مشروعك وسيتم تحويلك مباشرة إلى واتساب الشركة لإرسال طلبك والبدء فوراً.</p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="form-card">
+            <form onsubmit="sendToWhatsApp(event)">
+              <div class="form-group">
+                <label data-i18n="lblName">الاسم بالكامل</label>
+                <input type="text" id="custName" class="form-control" required placeholder="مثال: أحمد محمد" />
+              </div>
+
+              <div class="form-group">
+                <label data-i18n="lblBusiness">اسم المطعم / الكافيه / النشاط التجاري</label>
+                <input type="text" id="businessName" class="form-control" required placeholder="مثال: مطعم البركة" />
+              </div>
+
+              <div class="form-group">
+                <label data-i18n="lblPackage">الباقة المطلوبة</label>
+                <select id="packageSelect" class="form-control">
+                  <option value="الباقة الأولى - المنيو الإلكتروني (3,500 ج.م)" data-i18n="opt1">الباقة الأولى — المنيو الإلكتروني (3,500 جنيه مصري)</option>
+                  <option value="الباقة الثانية - المنيو الإلكتروني + لوحة التحكم (8,000 ج.م)" data-i18n="opt2">الباقة الثانية — المنيو الإلكتروني + لوحة التحكم (8,000 جنيه مصري)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label data-i18n="lblNotes">تفاصيل إضافية (اختياري)</label>
+                <textarea id="orderNotes" rows="3" class="form-control" placeholder="عدد الأقسام التقريبي أو أي ملاحظات..."></textarea>
+              </div>
+
+              <button type="submit" class="whatsapp-btn">
+                <span>💬</span>
+                <span data-i18n="sendWaBtn">إرسال الطلب عبر واتساب (01124349186)</span>
+              </button>
+            </form>
+          </div>
+
+          <div class="direct-card">
+            <h3 style="margin-bottom: 1rem; color: var(--accent-cyan);" data-i18n="directTitle">بيانات التواصل المباشر</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;" data-i18n="directDesc">
+              فريق OGA NeXxt جاهز للرد على استفساراتكم ومساعدتكم في اختيار النظام الأنسب لنشاطكم التجاري.
+            </p>
+
+            <div class="policy-box" style="margin-bottom: 1.25rem;">
+              <strong>🏢 OGA NeXxt</strong><br/>
+              <span>Digital Solutions & Smart Menu Systems</span><br/>
+              <span style="color: #34d399; font-weight: 700;">Your Business, One Step Ahead.</span>
+            </div>
+
+            <div class="policy-box" style="margin-bottom: 1.5rem;">
+              <strong data-i18n="waLabel">📱 رقم الواتساب والاتصال المباشر:</strong><br/>
+              <span dir="ltr" style="font-size: 1.25rem; font-weight: 900; color: #fff;">01124349186</span>
+            </div>
+
+            <a href="https://wa.me/201124349186" target="_blank" rel="noopener" class="btn-primary" style="width:100%; justify-content:center;">
+              <span data-i18n="directWaLink">فتح محادثة واتساب مباشرة ➔</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <p>© 2026 OGA NeXxt — Digital Solutions & Smart Menu Systems | WhatsApp: <span dir="ltr">01124349186</span></p>
+    </footer>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('pwa-install-banner').classList.add('show');
+    });
+
+    window.addEventListener('load', () => {
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      if (!isStandalone) {
+        setTimeout(() => {
+          document.getElementById('pwa-install-banner').classList.add('show');
+        }, 1500);
+      }
+    });
+
+    async function triggerInstallApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          document.getElementById('pwa-install-banner').classList.remove('show');
+        }
+        deferredPrompt = null;
+      } else {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        if (currentLang === 'ar') {
+          alert(isIOS
+            ? 'لتثبيت التطبيق على آيفون: اضغط على زر المشاركة (Share ⬆️) أسفل المتصفح ثم اختر "إضافة إلى الشاشة الرئيسية" (Add to Home Screen).'
+            : 'لتثبيت التطبيق على الشاشة الرئيسية: اضغط على قائمة المتصفح (⋮) بالأعلى ثم اختر "تثبيت التطبيق" أو "الإضافة إلى الشاشة الرئيسية".'
+          );
+        } else {
+          alert(isIOS
+            ? 'To install on iPhone: Tap the Share button (⬆️) at the bottom of Safari, then select "Add to Home Screen".'
+            : 'To install on your Home Screen: Tap the browser menu (⋮) at the top right and select "Install App" or "Add to Home Screen".'
+          );
+        }
+      }
+    }
+
+    function dismissInstallBanner() {
+      document.getElementById('pwa-install-banner').classList.remove('show');
+    }
+
+    let currentLang = 'ar';
+
+    const translations = {
+      ar: {
+        langBtn: '🌐 English',
+        installAppBtn: 'تثبيت التطبيق على الشاشة',
+        installShort: 'تثبيت',
+        pwaBannerTitle: 'تثبيت تطبيق OGA NeXxt',
+        pwaBannerSub: 'أضف التطبيق للشاشة الرئيسية للوصول السريع',
+        pwaBannerBtn: 'تثبيت الآن',
+        splashBadge: 'OGA NeXxt — حلول رقمية وأنظمة المنيو الذكي',
+        splashTitle: 'مرحباً بك في عالم المنيو الذكي',
+        splashSub: 'نحو تجربة رقمية أكثر احترافية وسهولة لنشاطك التجاري — حول قائمة طعامك أو خدماتك إلى تطبيق تفاعلي يثبته عميلك على هاتفه من أول مسحة كود.',
+        enterBtn: 'دخول واستكشاف المنصة',
+        brandTagline: 'أنظمة المنيو الذكي',
+        tab1: '1. هوية الخدمة',
+        tab2: '2. مميزات التطبيق والمنيو',
+        tab3: '3. الباقات والأسعار',
+        tab4: '4. اطلب خدمتك وتواصل معنا',
+        heroBadge: '✨ تصميم وتنفيذ المنيو الإلكتروني وأنظمة الإدارة',
+        heroTitle: 'حلول رقمية متكاملة تجعل نشاطك التجاري في جيب عميلك دائماً',
+        heroDesc: 'في OGA NeXxt نقدم لك نظام منيو إلكتروني ذكي يعمل كتطبيق متكامل على هاتف العميل بمجرد مسح رمز QR لأول مرة، مع تصميم احترافي يعكس قوة علامتك التجارية ويسرّع عملية الطلب.',
+        heroCta1: 'استعرض الباقات والأسعار',
+        heroCta2: '📲 تثبيت التطبيق على هاتفك',
+        mockTitle: 'قائمة الطعام الذكية',
+        mockItem1: '🍔 برجر كلاسيك دبل',
+        mockItem2: '🍕 بيتزا سوبريم',
+        mockItem3: '🥤 موهيتو باشن فروت',
+        mockInstall: '📲 تم تثبيت أيقونة المنيو على شاشة هاتف العميل!',
+        idCard1Title: 'هوية بصرية تخطف الأنظار',
+        idCard1Desc: 'تصميم واجهة المنيو بألوان وشعار مطعمك أو متجرك بدقة عالية وتنظيم احترافي للأقسام والصور والأسعار.',
+        idCard2Title: 'سرعة فائقة وتجربة سلسة',
+        idCard2Desc: 'تصفح فوري بدون انتظار تحميل ملفات PDF ثقيلة، ومتوافق بنسبة 100% مع جميع هواتف الأندرويد والآيفون.',
+        idCard3Title: 'Your Business, One Step Ahead',
+        idCard3Desc: 'نمنح نشاطك التجاري ميزة تنافسية حديثة ترفع من قيمة العلامة التجارية وتزيد معدل تكرار الطلبات من عملائك.',
+        featHead: 'لماذا المنيو الإلكتروني بتقنية التطبيق من OGA NeXxt؟',
+        featSub: 'حوّل كل زائر يمسح الكود إلى عميل دائم يحتفظ بتطبيقك على شاشة هاتفه الرئيسية.',
+        pwaTitle: '📲 ميزة التثبيت المباشر: خليك في جيب عميلك في كل وقت!',
+        pwaDesc: 'بمجرد أن يقوم عميلك بعمل Scan لكود الـ QR لأول مرة، يظهر له خيار تثبيت المنيو كتطبيق مباشر على شاشة هاتفه بأيقونة واسم نشاطك التجاري — ليفتح قائمتك ويطلب منك في أي وقت بلمسة واحدة دون الحاجة للبحث عن رابط أو إعادة مسح الكود.',
+        pwaBtn: 'اطلب تطبيقك الآن',
+        f1Title: 'تطبيق خفيف بدون متاجر معقدة',
+        f1Desc: 'يعمل بتقنية الويب التقدمي (PWA)؛ يُثبّت في ثوانٍ معدودة دون استهلاك مساحة تخزين الهاتف أو الحاجة لتحميل من المتاجر.',
+        f2Title: 'تقسيم احترافي للأقسام والمنتجات',
+        f2Desc: 'عرض منظم للأصناف مع صور عالية الجودة، وصف دقيق للمكونات، والأسعار المحدثة بشكل واضح وجذاب.',
+        f3Title: 'رابط إلكتروني + كود QR مخصص',
+        f3Desc: 'تحصل على رابط مباشر للمشاركة على فيسبوك وإنستجرام وواتساب، بالإضافة إلى كود QR جاهز للطباعة على الطاولات.',
+        f4Title: 'لوحة تحكم شاملة (في الباقة الثانية)',
+        f4Desc: 'إمكانية إضافة أصناف جديدة، تعديل الأسعار والصور، أو إخفاء الأصناف غير المتوفرة بنفسك في أي لحظة.',
+        f5Title: 'طلب مباشر وسريع',
+        f5Desc: 'تسهيل وصول العميل إليك وطلب الأصناف مباشرة مما يقلل أخطاء المكالمات الهاتفية ويزيد المبيعات.',
+        f6Title: 'استقرار وأداء عالي',
+        f6Desc: 'استضافة سريعة وموثوقة تضمن عمل المنيو بكفاءة تامة في أوقات الذروة وازدحام الطلبات.',
+        priceHead: 'باقات تصميم وتنفيذ المنيو الإلكتروني',
+        priceSub: 'اختر الباقة الأنسب لحجم نشاطك التجاري — دفعة واحدة بدون اشتراكات شهرية إجبارية.',
+        pkg1Badge: 'الباقة الأولى | المنيو الإلكتروني',
+        pkg1Price: '3,500 جنيه مصري',
+        pkg1Note: 'دفعة واحدة — تسليم جاهز للاستخدام',
+        pkg1F1: 'تصميم وتنفيذ منيو إلكتروني احترافي متكامل.',
+        pkg1F2: 'تقسيم المنتجات إلى أقسام منظمة وسهلة التصفح.',
+        pkg1F3: 'إضافة الأصناف والأسعار والصور والتفاصيل بدقة.',
+        pkg1F4: 'تصميم متوافق مع جميع الهواتف المحمولة وقابل للتثبيت كتطبيق.',
+        pkg1F5: 'توفير رابط إلكتروني خاص بالمنيو.',
+        pkg1F6: 'إنشاء كود QR للوصول إلى المنيو بسهولة.',
+        pkg1PolicyTitle: '🔧 سياسة الصيانة والتحديث:',
+        pkg1PolicyDesc: 'بعد التسليم، يتم احتساب 150 جنيهاً لكل مرة صيانة أو تحديث بسيط (تعديل أسعار، إضافة/حذف صنف، تغيير صور أو أقسام). التطوير البرمجي الجديد يُسعّر بشكل منفصل.',
+        orderPkg1: 'اطلب الباقة الأولى الآن',
+        pkg2Badge: '⭐ الباقة الثانية | المنيو الإلكتروني + لوحة التحكم',
+        pkg2Price: '8,000 جنيه مصري',
+        pkg2Note: 'دفعة واحدة — تحكم كامل 100% بدون رسوم صيانة',
+        pkg2F1: 'تشمل جميع مميزات الباقة الأولى بالكامل.',
+        pkg2F2: 'لوحة تحكم (Dashboard) خاصة بنشاطك التجاري.',
+        pkg2F3: 'إضافة أصناف جديدة وحذف الأصناف القديمة بنفسك.',
+        pkg2F4: 'تعديل الأسعار والصور والتفاصيل في أي لحظة.',
+        pkg2F5: 'إضافة وتعديل وحذف أقسام المنيو بحرية تامة.',
+        pkg2F6: 'تحديث المنيو بنفسك في أي وقت دون الحاجة للرجوع لفريق OGA NeXxt.',
+        pkg2PolicyTitle: '💡 مميزات هذه الباقة:',
+        pkg2PolicyDesc: 'تحصل على نظام متكامل يمنحك التحكم الكامل ويوفر عليك تكاليف الصيانة المتكررة للتعديلات البسيطة (بدون أي رسوم عند تنفيذها بنفسك).',
+        orderPkg2: 'اطلب الباقة الثانية المتكاملة',
+        compCol1: 'التفاصيل والمميزات',
+        compCol2: 'الباقة الأولى (المنيو فقط)',
+        compCol3: 'الباقة الثانية (المنيو + الداش بورد)',
+        compR1: 'تصميم وتنفيذ المنيو',
+        compR2: 'رابط إلكتروني مخصص',
+        compR3: 'QR Code جاهز للطباعة',
+        compR4: 'إدارة الأصناف بنفسك',
+        compR5: 'تعديل الأسعار بنفسك',
+        compR6: 'إدارة الأقسام بنفسك',
+        compR7: 'صيانة التعديلات البسيطة',
+        compR7V1: '150 جنيهاً للمرة',
+        compR7V2: 'بدون رسوم عند تنفيذها بنفسك',
+        termsTitle: '📋 شروط الاتفاق والتنفيذ',
+        term1: 'الأسعار الموضحة تشمل تنفيذ وتسليم المميزات المذكورة في كل باقة.',
+        term2: 'يتم الاتفاق على تفاصيل المنيو والأقسام والمحتوى قبل بدء التنفيذ.',
+        term3: 'أي طلبات إضافية خارج نطاق الباقة يتم الاتفاق على تكلفتها بشكل منفصل قبل تنفيذها.',
+        term4: 'يتم تسليم المشروع بعد الانتهاء من التنفيذ والمراجعة والاعتماد.',
+        contactHead: 'اطلب خدمتك الآن وتواصل مع فريق OGA NeXxt',
+        contactSub: 'املأ بيانات مشروعك وسيتم تحويلك مباشرة إلى واتساب الشركة لإرسال طلبك والبدء فوراً.',
+        lblName: 'الاسم بالكامل',
+        lblBusiness: 'اسم المطعم / الكافيه / النشاط التجاري',
+        lblPackage: 'الباقة المطلوبة',
+        opt1: 'الباقة الأولى — المنيو الإلكتروني (3,500 جنيه مصري)',
+        opt2: 'الباقة الثانية — المنيو الإلكتروني + لوحة التحكم (8,000 جنيه مصري)',
+        lblNotes: 'تفاصيل إضافية (اختياري)',
+        sendWaBtn: 'إرسال الطلب عبر واتساب (01124349186)',
+        directTitle: 'بيانات التواصل المباشر',
+        directDesc: 'فريق OGA NeXxt جاهز للرد على استفساراتكم ومساعدتكم في اختيار النظام الأنسب لنشاطكم التجاري.',
+        waLabel: '📱 رقم الواتساب والاتصال المباشر:',
+        directWaLink: 'فتح محادثة واتساب مباشرة ➔'
+      },
+      en: {
+        langBtn: '🌐 العربية',
+        installAppBtn: 'Install App on Home Screen',
+        installShort: 'Install',
+        pwaBannerTitle: 'Install OGA NeXxt App',
+        pwaBannerSub: 'Add to Home Screen for instant 1-tap access',
+        pwaBannerBtn: 'Install Now',
+        splashBadge: 'OGA NeXxt — Digital Solutions & Smart Menu Systems',
+        splashTitle: 'Welcome to Smart Menu Systems',
+        splashSub: 'Towards a more professional and seamless digital experience for your business — turn your menu into an installable app saved on your customer’s phone from the very first QR scan.',
+        enterBtn: 'Enter & Explore Platform',
+        brandTagline: 'Smart Menu Systems',
+        tab1: '1. Service Identity',
+        tab2: '2. App & Menu Features',
+        tab3: '3. Packages & Pricing',
+        tab4: '4. Order & Contact Us',
+        heroBadge: '✨ Smart Electronic Menu & Management Systems',
+        heroTitle: 'Integrated Digital Solutions Keeping Your Business in Your Customer’s Pocket',
+        heroDesc: 'At OGA NeXxt, we build smart interactive menus that install directly as an app on your customer’s smartphone upon the first QR scan—combining eye-catching branding with effortless ordering.',
+        heroCta1: 'View Packages & Pricing',
+        heroCta2: '📲 Install App on Your Phone',
+        mockTitle: 'Smart Digital Menu',
+        mockItem1: '🍔 Double Classic Burger',
+        mockItem2: '🍕 Supreme Pizza',
+        mockItem3: '🥤 Passion Fruit Mojito',
+        mockInstall: '📲 Menu App icon installed on customer’s home screen!',
+        idCard1Title: 'Eye-Catching Brand Identity',
+        idCard1Desc: 'Custom-tailored UI matching your restaurant or store colors, logo, categories, photos, and pricing.',
+        idCard2Title: 'Blazing Fast & Smooth UX',
+        idCard2Desc: 'Instant browsing without heavy PDF downloads—100% responsive across all iOS and Android devices.',
+        idCard3Title: 'Your Business, One Step Ahead',
+        idCard3Desc: 'Elevate your brand perception and boost repeat customer orders with modern digital convenience.',
+        featHead: 'Why Choose OGA NeXxt Installable Smart Menus?',
+        featSub: 'Convert every QR code scanner into a loyal customer with your icon right on their home screen.',
+        pwaTitle: '📲 Direct App Install: Stay in Your Customer’s Pocket 24/7!',
+        pwaDesc: 'The very first time a customer scans your QR code, they can add your menu directly to their phone’s home screen with your brand icon and name—allowing instant one-tap access anytime without searching for links or re-scanning.',
+        pwaBtn: 'Order Your App Now',
+        f1Title: 'Lightweight App Without Store Hassles',
+        f1Desc: 'Powered by Progressive Web App (PWA) technology—installs in seconds with near-zero storage footprint.',
+        f2Title: 'Structured Categories & Items',
+        f2Desc: 'Clean, organized layout showcasing high-resolution food photos, descriptions, and clear pricing.',
+        f3Title: 'Direct Web Link + Custom QR Code',
+        f3Desc: 'Get a shareable link for Instagram, Facebook, and WhatsApp plus a print-ready QR code for tables.',
+        f4Title: 'Full Admin Dashboard (Package 2)',
+        f4Desc: 'Add new items, update prices and photos, or manage categories yourself anytime with full independence.',
+        f5Title: 'Fast & Direct Ordering',
+        f5Desc: 'Streamline customer selection and ordering to reduce phone errors and increase average order value.',
+        f6Title: 'High Reliability & Speed',
+        f6Desc: 'Fast cloud hosting engineered to handle peak dining hours effortlessly.',
+        priceHead: 'Smart Electronic Menu Packages',
+        priceSub: 'Choose the right plan for your business — one-time payment with no mandatory monthly fees.',
+        pkg1Badge: 'Package 1 | Electronic Menu',
+        pkg1Price: '3,500 EGP',
+        pkg1Note: 'One-Time Payment — Ready-to-Use Delivery',
+        pkg1F1: 'Professional design & development of a smart electronic menu.',
+        pkg1F2: 'Organized product categories for effortless browsing.',
+        pkg1F3: 'Full entry of items, prices, photos, and descriptions.',
+        pkg1F4: 'Mobile-first responsive design installable as a phone app.',
+        pkg1F5: 'Dedicated web link for your menu.',
+        pkg1F6: 'Custom QR Code for instant table & social access.',
+        pkg1PolicyTitle: '🔧 Maintenance & Update Policy:',
+        pkg1PolicyDesc: 'After delivery, minor updates (price edits, adding/removing items, updating photos or sections) are billed at 150 EGP per update request. New custom features are quoted separately.',
+        orderPkg1: 'Order Package 1 Now',
+        pkg2Badge: '⭐ Package 2 | Electronic Menu + Admin Dashboard',
+        pkg2Price: '8,000 EGP',
+        pkg2Note: 'One-Time Payment — 100% Self-Control & Zero Update Fees',
+        pkg2F1: 'Includes all features of Package 1.',
+        pkg2F2: 'Dedicated Admin Control Dashboard for your business.',
+        pkg2F3: 'Add new items and delete old ones yourself anytime.',
+        pkg2F4: 'Edit prices, photos, and item details on the fly.',
+        pkg2F5: 'Create, edit, and remove menu categories freely.',
+        pkg2F6: 'Update your menu independently without waiting for support.',
+        pkg2PolicyTitle: '💡 Package Advantage:',
+        pkg2PolicyDesc: 'Enjoy total control over your menu and eliminate recurring maintenance fees for routine updates when managed via your dashboard.',
+        orderPkg2: 'Order Complete Package 2',
+        compCol1: 'Features & Details',
+        compCol2: 'Package 1 (Menu Only)',
+        compCol3: 'Package 2 (Menu + Dashboard)',
+        compR1: 'Smart Menu Design & Build',
+        compR2: 'Dedicated Web Link',
+        compR3: 'Print-Ready QR Code',
+        compR4: 'Self-Manage Menu Items',
+        compR5: 'Self-Edit Prices',
+        compR6: 'Self-Manage Categories',
+        compR7: 'Minor Updates Maintenance',
+        compR7V1: '150 EGP per update',
+        compR7V2: 'Free when edited via Dashboard',
+        termsTitle: '📋 Agreement & Delivery Terms',
+        term1: 'Listed prices cover full implementation and delivery of the specified package features.',
+        term2: 'Menu details, categories, and content are finalized before development begins.',
+        term3: 'Any additional custom requests outside the selected package scope are quoted separately prior to execution.',
+        term4: 'Final project handover takes place upon completion, review, and client approval.',
+        contactHead: 'Order Your Service & Contact OGA NeXxt',
+        contactSub: 'Fill in your business details to send your request directly to our WhatsApp team and get started right away.',
+        lblName: 'Full Name',
+        lblBusiness: 'Restaurant / Cafe / Business Name',
+        lblPackage: 'Selected Package',
+        opt1: 'Package 1 — Electronic Menu (3,500 EGP)',
+        opt2: 'Package 2 — Electronic Menu + Admin Dashboard (8,000 EGP)',
+        lblNotes: 'Additional Notes (Optional)',
+        sendWaBtn: 'Send Order via WhatsApp (01124349186)',
+        directTitle: 'Direct Contact Information',
+        directDesc: 'The OGA NeXxt team is ready to answer your questions and help you launch the ideal digital menu for your business.',
+        waLabel: '📱 Direct WhatsApp & Phone Number:',
+        directWaLink: 'Open Direct WhatsApp Chat ➔'
+      }
+    };
+
+    function applyTranslations() {
+      const dict = translations[currentLang];
+      document.documentElement.lang = currentLang;
+      document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+      document.getElementById('splash-lang-btn').textContent = dict.langBtn;
+      document.getElementById('nav-lang-btn').textContent = dict.langBtn;
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.textContent = dict[key];
+        }
+      });
+    }
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'ar' ? 'en' : 'ar';
+      applyTranslations();
+    }
+
+    function enterApp() {
+      document.getElementById('splash-screen').classList.add('hidden');
+      document.getElementById('app-container').classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function backToSplash() {
+      document.getElementById('splash-screen').classList.remove('hidden');
+    }
+
+    function switchTab(tabId, btnEl) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToTab(tabId) {
+      const buttons = document.querySelectorAll('.tab-btn');
+      const map = { identity: 0, features: 1, pricing: 2, contact: 3 };
+      switchTab(tabId, buttons[map[tabId]]);
+    }
+
+    function selectPackageOrder(pkgValue) {
+      document.getElementById('packageSelect').value = pkgValue;
+      goToTab('contact');
+    }
+
+    function sendToWhatsApp(e) {
+      e.preventDefault();
+      const name = document.getElementById('custName').value.trim();
+      const business = document.getElementById('businessName').value.trim();
+      const pkg = document.getElementById('packageSelect').value;
+      const notes = document.getElementById('orderNotes').value.trim();
+
+      const msg = currentLang === 'ar'
+        ? `مرحباً فريق OGA NeXxt 👋%0Aأرغب في طلب خدمة المنيو الإلكتروني:%0A• الاسم: ${encodeURIComponent(name)}%0A• النشاط التجاري: ${encodeURIComponent(business)}%0A• الباقة: ${encodeURIComponent(pkg)}${notes ? '%0A• ملاحظات: ' + encodeURIComponent(notes) : ''}`
+        : `Hello OGA NeXxt Team 👋%0AI would like to order a Smart Menu system:%0A• Name: ${encodeURIComponent(name)}%0A• Business: ${encodeURIComponent(business)}%0A• Package: ${encodeURIComponent(pkg)}${notes ? '%0A• Notes: ' + encodeURIComponent(notes) : ''}`;
+
+      window.open(`https://wa.me/201124349186?text=${msg}`, '_blank');
+    }
+  </script>
+</body>
+</html>
