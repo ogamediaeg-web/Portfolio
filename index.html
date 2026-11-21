@@ -16,15 +16,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #030b1c;
-      --bg-card: #081633;
-      --bg-card-hover: #0d2149;
+      --bg-dark: #020817;
+      --bg-card: #081736;
+      --bg-card-hover: #0e224d;
       --primary-blue: #0077ff;
       --accent-cyan: #00e1ff;
       --accent-green: #10b981;
       --text-main: #ffffff;
-      --text-muted: #94a3b8;
-      --border-glass: rgba(0, 225, 255, 0.18);
+      --text-muted: #9fb3c8;
+      --border-glass: rgba(0, 225, 255, 0.22);
       --gradient-brand: linear-gradient(135deg, #0066ff 0%, #00e1ff 100%);
       --gradient-green: linear-gradient(135deg, #059669 0%, #10b981 100%);
     }
@@ -69,11 +69,7 @@
       to { opacity: 1; transform: translate(-50%, 0); }
     }
 
-    .pwa-banner-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .pwa-banner-info { display: flex; align-items: center; gap: 10px; }
 
     .pwa-banner-icon {
       width: 46px;
@@ -81,37 +77,16 @@
       border-radius: 12px;
       overflow: hidden;
       border: 1px solid rgba(0, 225, 255, 0.45);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       flex-shrink: 0;
       background: #fff;
     }
 
-    .pwa-banner-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    .pwa-banner-icon img { width: 100%; height: 100%; object-fit: cover; }
 
-    .pwa-banner-text strong {
-      display: block;
-      font-size: 0.92rem;
-      color: #fff;
-    }
+    .pwa-banner-text strong { display: block; font-size: 0.92rem; color: #fff; }
+    .pwa-banner-text span { display: block; font-size: 0.78rem; color: #cbd5e1; }
 
-    .pwa-banner-text span {
-      display: block;
-      font-size: 0.78rem;
-      color: #cbd5e1;
-    }
-
-    .pwa-banner-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
+    .pwa-banner-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 
     .pwa-install-now {
       background: var(--gradient-green);
@@ -137,66 +112,81 @@
       font-weight: 800;
     }
 
-    /* Splash Screen */
+    /* Vibrant Rich Splash Screen */
     #splash-screen {
       position: fixed;
       inset: 0;
       z-index: 1000;
-      background: radial-gradient(circle at 50% 35%, #061b44 0%, #020817 80%);
+      background:
+        radial-gradient(circle at 18% 18%, rgba(0, 225, 255, 0.22) 0%, transparent 45%),
+        radial-gradient(circle at 85% 22%, rgba(0, 119, 255, 0.28) 0%, transparent 50%),
+        radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.14) 0%, transparent 50%),
+        linear-gradient(160deg, #041330 0%, #020919 60%, #010510 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       text-align: center;
-      padding: 2rem 1.25rem;
-      transition: opacity 0.6s ease, transform 0.6s ease, visibility 0.6s;
+      padding: 1.25rem 1.25rem 3.5rem;
+      transition: opacity 0.55s ease, transform 0.55s ease, visibility 0.55s;
       overflow-y: auto;
     }
 
     #splash-screen.hidden {
       opacity: 0;
-      transform: scale(1.04);
+      transform: scale(1.03);
       visibility: hidden;
       pointer-events: none;
     }
 
+    .splash-shell {
+      width: 100%;
+      max-width: 780px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
     .splash-top-bar {
-      position: absolute;
-      top: 1.25rem;
-      left: 1.25rem;
-      right: 1.25rem;
+      width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
     }
 
     .lang-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--border-glass);
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(0, 225, 255, 0.32);
       color: #fff;
-      padding: 0.5rem 1.1rem;
+      padding: 0.52rem 1.15rem;
       border-radius: 999px;
       cursor: pointer;
+      font-family: inherit;
       font-weight: 700;
       font-size: 0.9rem;
       display: inline-flex;
       align-items: center;
       gap: 0.45rem;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       transition: all 0.25s ease;
     }
 
     .lang-btn:hover {
-      background: rgba(0, 225, 255, 0.18);
+      background: rgba(0, 225, 255, 0.2);
       border-color: var(--accent-cyan);
+      transform: translateY(-1px);
     }
 
     .install-pill-btn {
-      background: rgba(16, 185, 129, 0.2);
-      border: 1px solid #10b981;
-      color: #6ee7b7;
-      padding: 0.5rem 1.1rem;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.24), rgba(0, 225, 255, 0.16));
+      border: 1px solid rgba(52, 211, 153, 0.65);
+      color: #a7f3d0;
+      padding: 0.52rem 1.15rem;
       border-radius: 999px;
       cursor: pointer;
       font-family: inherit;
@@ -205,77 +195,201 @@
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
+      transition: all 0.25s ease;
     }
 
-    .main-logo-wrap {
-      margin-top: 2.5rem;
-      margin-bottom: 1.25rem;
-      animation: floatLogo 4s ease-in-out infinite;
+    .install-pill-btn:hover {
+      border-color: var(--accent-cyan);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* Hero Logo Card */
+    .splash-logo-card {
+      position: relative;
+      padding: 10px;
+      border-radius: 34px;
+      background: linear-gradient(135deg, rgba(0, 225, 255, 0.45), rgba(0, 119, 255, 0.18), rgba(16, 185, 129, 0.35));
+      box-shadow: 0 24px 60px rgba(0, 140, 255, 0.32), 0 0 40px rgba(0, 225, 255, 0.16);
+      margin-bottom: 1.35rem;
+      animation: floatLogo 4.5s ease-in-out infinite;
     }
 
     .main-logo-img {
-      width: clamp(185px, 38vw, 255px);
+      width: clamp(190px, 36vw, 245px);
       height: auto;
-      border-radius: 28px;
-      box-shadow: 0 18px 48px rgba(0, 180, 255, 0.35);
-      border: 1.5px solid rgba(0, 225, 255, 0.35);
+      border-radius: 26px;
       display: block;
-      margin: 0 auto;
+      background: #020b1f;
     }
 
     @keyframes floatLogo {
       0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-7px); }
+      50% { transform: translateY(-6px); }
     }
 
     .splash-badge {
-      display: inline-block;
-      padding: 0.35rem 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.38rem 1.15rem;
       border-radius: 999px;
-      background: rgba(0, 225, 255, 0.12);
-      border: 1px solid rgba(0, 225, 255, 0.35);
+      background: rgba(0, 225, 255, 0.14);
+      border: 1px solid rgba(0, 225, 255, 0.4);
       color: var(--accent-cyan);
-      font-weight: 700;
-      font-size: 0.85rem;
+      font-weight: 800;
+      font-size: 0.86rem;
       margin-bottom: 0.85rem;
+      letter-spacing: 0.2px;
     }
 
     .splash-title {
-      font-size: clamp(1.75rem, 4.2vw, 3rem);
+      font-size: clamp(1.85rem, 4.4vw, 3.05rem);
       font-weight: 900;
-      background: linear-gradient(to left, #ffffff, #7dd3fc);
+      line-height: 1.22;
+      background: linear-gradient(135deg, #ffffff 0%, #bae6fd 55%, #5eead4 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 0.65rem;
+      margin-bottom: 0.7rem;
     }
 
-    .splash-sub {
-      max-width: 620px;
-      color: var(--text-muted);
+    .splash-welcome-note {
+      max-width: 580px;
+      color: #cbd5e1;
       font-size: 1.02rem;
-      margin-bottom: 2rem;
+      font-weight: 600;
+      margin-bottom: 1.65rem;
+      padding: 0.75rem 1.2rem;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .enter-btn {
       background: var(--gradient-brand);
       color: #fff;
       border: none;
-      padding: 1rem 2.75rem;
-      border-radius: 14px;
-      font-size: 1.15rem;
-      font-weight: 800;
+      padding: 1rem 2.8rem;
+      border-radius: 16px;
+      font-family: inherit;
+      font-size: 1.12rem;
+      font-weight: 900;
       cursor: pointer;
-      box-shadow: 0 12px 32px rgba(0, 119, 255, 0.45);
+      box-shadow: 0 14px 34px rgba(0, 119, 255, 0.48), 0 0 22px rgba(0, 225, 255, 0.25);
       display: inline-flex;
       align-items: center;
-      gap: 0.75rem;
-      transition: all 0.3s ease;
+      gap: 0.7rem;
+      transition: all 0.28s ease;
+      margin-bottom: 2.25rem;
     }
 
     .enter-btn:hover {
       transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 16px 40px rgba(0, 225, 255, 0.55);
+      box-shadow: 0 18px 42px rgba(0, 225, 255, 0.55);
     }
+
+    /* Dedicated Quick Connect & Social Hub inside Splash */
+    .splash-connect-box {
+      width: 100%;
+      background: rgba(8, 23, 54, 0.78);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 225, 255, 0.24);
+      border-radius: 26px;
+      padding: 1.5rem;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    .splash-connect-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 1.15rem;
+      flex-wrap: wrap;
+      text-align: start;
+    }
+
+    .splash-connect-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .splash-connect-sub {
+      font-size: 0.82rem;
+      color: var(--accent-cyan);
+      font-weight: 700;
+    }
+
+    .connect-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      .connect-grid { grid-template-columns: 1fr; }
+      .splash-connect-box { padding: 1.15rem; }
+    }
+
+    .connect-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      padding: 0.95rem 1.1rem;
+      border-radius: 18px;
+      text-decoration: none;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.25s ease;
+      text-align: start;
+      min-height: 70px;
+    }
+
+    .connect-card:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .connect-card.whatsapp {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(5, 150, 105, 0.12));
+      border-color: rgba(16, 185, 129, 0.55);
+    }
+    .connect-card.whatsapp:hover { border-color: #34d399; box-shadow: 0 10px 24px rgba(16, 185, 129, 0.22); }
+
+    .connect-card.facebook:hover { border-color: #3b82f6; box-shadow: 0 10px 24px rgba(59, 130, 246, 0.2); }
+    .connect-card.tiktok:hover { border-color: #2dd4bf; box-shadow: 0 10px 24px rgba(45, 212, 191, 0.2); }
+    .connect-card.instagram:hover { border-color: #f472b6; box-shadow: 0 10px 24px rgba(244, 114, 182, 0.2); }
+
+    .connect-left { display: flex; align-items: center; gap: 0.8rem; }
+
+    .connect-badge-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .icon-wa { background: rgba(16, 185, 129, 0.22); color: #34d399; }
+    .icon-fb { background: rgba(59, 130, 246, 0.22); color: #60a5fa; }
+    .icon-tt { background: rgba(45, 212, 191, 0.2); color: #5eead4; }
+    .icon-ig { background: linear-gradient(135deg, rgba(236, 72, 153, 0.25), rgba(249, 115, 22, 0.25)); color: #f9a8d4; }
+
+    .connect-meta strong { display: block; font-size: 0.94rem; font-weight: 800; color: #fff; }
+    .connect-meta span { display: block; font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
+    .connect-card.whatsapp .connect-meta span { color: #a7f3d0; font-weight: 700; }
+
+    .connect-arrow { font-size: 1rem; color: var(--accent-cyan); font-weight: 800; flex-shrink: 0; }
 
     /* Main App Layout */
     #app-container { display: none; min-height: 100vh; flex-direction: column; }
@@ -285,7 +399,7 @@
       position: sticky;
       top: 0;
       z-index: 900;
-      background: rgba(3, 11, 28, 0.9);
+      background: rgba(2, 8, 23, 0.92);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border-glass);
       padding: 0.75rem 1.5rem;
@@ -589,12 +703,39 @@
 
     .whatsapp-btn:hover { transform: translateY(-2px); }
 
+    .social-links-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+
+    .social-pill-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .social-pill-link:hover {
+      border-color: var(--accent-cyan);
+      background: rgba(0, 225, 255, 0.1);
+    }
+
     footer { border-top: 1px solid rgba(255, 255, 255, 0.08); padding: 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.88rem; }
   </style>
 </head>
 <body>
 
-  <!-- Floating Auto-Install App Banner (Uses First Image as App Icon) -->
+  <!-- Floating Auto-Install App Banner -->
   <div id="pwa-install-banner">
     <div class="pwa-banner-info">
       <div class="pwa-banner-icon">
@@ -611,31 +752,90 @@
     </div>
   </div>
 
-  <!-- 1. Splash Welcome Screen (Shows Second Image Directly Upon Opening Link) -->
+  <!-- 1. Vibrant Splash Entry Screen + Dedicated Direct Connect & Social Hub -->
   <section id="splash-screen">
-    <div class="splash-top-bar">
-      <button class="install-pill-btn" onclick="triggerInstallApp()" id="splash-install-btn">
-        📲 <span data-i18n="installAppBtn">تثبيت التطبيق على الشاشة</span>
+    <div class="splash-shell">
+      <div class="splash-top-bar">
+        <button class="install-pill-btn" onclick="triggerInstallApp()" id="splash-install-btn">
+          📲 <span data-i18n="installAppBtn">تثبيت التطبيق على الشاشة</span>
+        </button>
+        <button class="lang-btn" onclick="toggleLanguage()" id="splash-lang-btn">
+          🌐 English
+        </button>
+      </div>
+
+      <div class="splash-logo-card">
+        <img src="logo-main.png" alt="OGA NeXxt Logo" class="main-logo-img" />
+      </div>
+
+      <span class="splash-badge" data-i18n="splashBadge">OGA NeXxt — حلول رقمية وأنظمة المنيو الذكي</span>
+      <h1 class="splash-title" data-i18n="splashTitle">أهلاً بك في OGA NeXxt</h1>
+      <p class="splash-welcome-note" data-i18n="splashWelcome">
+        أهلاً بيك يا فندم في مساحتنا الرقمية؛ يسعدنا وجودك هنا، ونتمنى لك تجربة سلسة وممتعة تليق بنشاطك التجاري.
+      </p>
+
+      <button class="enter-btn" onclick="enterApp()">
+        <span data-i18n="enterBtn">دخول واستكشاف المنصة</span>
+        <span>➔</span>
       </button>
-      <button class="lang-btn" onclick="toggleLanguage()" id="splash-lang-btn">
-        🌐 English
-      </button>
+
+      <!-- Dedicated Space for Direct Contact & Social Channels -->
+      <div class="splash-connect-box">
+        <div class="splash-connect-header">
+          <div class="splash-connect-title">
+            <span>⚡</span>
+            <span data-i18n="connectHubTitle">التواصل المباشر ومنصاتنا الرسمية</span>
+          </div>
+          <span class="splash-connect-sub" data-i18n="connectHubSub">تواصل معنا فوراً أو تابع أحدث أعمالنا</span>
+        </div>
+
+        <div class="connect-grid">
+          <a href="https://wa.me/201124349186" target="_blank" rel="noopener" class="connect-card whatsapp">
+            <div class="connect-left">
+              <div class="connect-badge-icon icon-wa">💬</div>
+              <div class="connect-meta">
+                <strong data-i18n="waCardTitle">واتساب وتواصل مباشر</strong>
+                <span dir="ltr">01124349186</span>
+              </div>
+            </div>
+            <span class="connect-arrow">➔</span>
+          </a>
+
+          <a href="https://www.facebook.com/share/1JU4Lgwfzq/" target="_blank" rel="noopener" class="connect-card facebook">
+            <div class="connect-left">
+              <div class="connect-badge-icon icon-fb">f</div>
+              <div class="connect-meta">
+                <strong data-i18n="fbCardTitle">صفحة فيسبوك الرسمية</strong>
+                <span data-i18n="fbCardSub">Facebook Page — OGA NeXxt</span>
+              </div>
+            </div>
+            <span class="connect-arrow">↗</span>
+          </a>
+
+          <a href="https://www.tiktok.com/@oga190193?_r=1&_t=ZS-9BZrjG2s5Jq" target="_blank" rel="noopener" class="connect-card tiktok">
+            <div class="connect-left">
+              <div class="connect-badge-icon icon-tt">♪</div>
+              <div class="connect-meta">
+                <strong data-i18n="ttCardTitle">حساب تيك توك</strong>
+                <span>@oga190193</span>
+              </div>
+            </div>
+            <span class="connect-arrow">↗</span>
+          </a>
+
+          <a href="https://www.instagram.com/oga.nexxt?jplx=dDE0Y2FxdW84aTRn" target="_blank" rel="noopener" class="connect-card instagram">
+            <div class="connect-left">
+              <div class="connect-badge-icon icon-ig">◎</div>
+              <div class="connect-meta">
+                <strong data-i18n="igCardTitle">حساب إنستغرام</strong>
+                <span>@oga.nexxt</span>
+              </div>
+            </div>
+            <span class="connect-arrow">↗</span>
+          </a>
+        </div>
+      </div>
     </div>
-
-    <div class="main-logo-wrap">
-      <img src="logo-main.png" alt="OGA NeXxt Logo" class="main-logo-img" />
-    </div>
-
-    <span class="splash-badge" data-i18n="splashBadge">OGA NeXxt — حلول رقمية وأنظمة المنيو الذكي</span>
-    <h1 class="splash-title" data-i18n="splashTitle">مرحباً بك في عالم المنيو الذكي</h1>
-    <p class="splash-sub" data-i18n="splashSub">
-      نحو تجربة رقمية أكثر احترافية وسهولة لنشاطك التجاري — حول قائمة طعامك أو خدماتك إلى تطبيق تفاعلي يثبته عميلك على هاتفه من أول مسحة كود.
-    </p>
-
-    <button class="enter-btn" onclick="enterApp()">
-      <span data-i18n="enterBtn">دخول واستكشاف المنصة</span>
-      <span>➔</span>
-    </button>
   </section>
 
   <!-- 2. Main Application -->
@@ -927,7 +1127,7 @@
               <span style="color: #34d399; font-weight: 700;">Your Business, One Step Ahead.</span>
             </div>
 
-            <div class="policy-box" style="margin-bottom: 1.5rem;">
+            <div class="policy-box" style="margin-bottom: 1.25rem;">
               <strong data-i18n="waLabel">📱 رقم الواتساب والاتصال المباشر:</strong><br/>
               <span dir="ltr" style="font-size: 1.25rem; font-weight: 900; color: #fff;">01124349186</span>
             </div>
@@ -935,6 +1135,21 @@
             <a href="https://wa.me/201124349186" target="_blank" rel="noopener" class="btn-primary" style="width:100%; justify-content:center;">
               <span data-i18n="directWaLink">فتح محادثة واتساب مباشرة ➔</span>
             </a>
+
+            <div class="social-links-stack">
+              <a href="https://www.facebook.com/share/1JU4Lgwfzq/" target="_blank" rel="noopener" class="social-pill-link">
+                <span>📘 صفحة فيسبوك (Facebook Page)</span>
+                <span>↗</span>
+              </a>
+              <a href="https://www.tiktok.com/@oga190193?_r=1&_t=ZS-9BZrjG2s5Jq" target="_blank" rel="noopener" class="social-pill-link">
+                <span>🎵 تيك توك (@oga190193)</span>
+                <span>↗</span>
+              </a>
+              <a href="https://www.instagram.com/oga.nexxt?jplx=dDE0Y2FxdW84aTRn" target="_blank" rel="noopener" class="social-pill-link">
+                <span>📸 إنستغرام (@oga.nexxt)</span>
+                <span>↗</span>
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -1009,9 +1224,16 @@
         pwaBannerSub: 'أضف التطبيق للشاشة الرئيسية للوصول السريع',
         pwaBannerBtn: 'تثبيت الآن',
         splashBadge: 'OGA NeXxt — حلول رقمية وأنظمة المنيو الذكي',
-        splashTitle: 'مرحباً بك في عالم المنيو الذكي',
-        splashSub: 'نحو تجربة رقمية أكثر احترافية وسهولة لنشاطك التجاري — حول قائمة طعامك أو خدماتك إلى تطبيق تفاعلي يثبته عميلك على هاتفه من أول مسحة كود.',
+        splashTitle: 'أهلاً بك في OGA NeXxt',
+        splashWelcome: 'أهلاً بيك يا فندم في مساحتنا الرقمية؛ يسعدنا وجودك هنا، ونتمنى لك تجربة سلسة وممتعة تليق بنشاطك التجاري.',
         enterBtn: 'دخول واستكشاف المنصة',
+        connectHubTitle: 'التواصل المباشر ومنصاتنا الرسمية',
+        connectHubSub: 'تواصل معنا فوراً أو تابع أحدث أعمالنا',
+        waCardTitle: 'واتساب وتواصل مباشر',
+        fbCardTitle: 'صفحة فيسبوك الرسمية',
+        fbCardSub: 'Facebook Page — OGA NeXxt',
+        ttCardTitle: 'حساب تيك توك',
+        igCardTitle: 'حساب إنستغرام',
         brandTagline: 'أنظمة المنيو الذكي',
         tab1: '1. هوية الخدمة',
         tab2: '2. مميزات التطبيق والمنيو',
@@ -1115,9 +1337,16 @@
         pwaBannerSub: 'Add to Home Screen for instant 1-tap access',
         pwaBannerBtn: 'Install Now',
         splashBadge: 'OGA NeXxt — Digital Solutions & Smart Menu Systems',
-        splashTitle: 'Welcome to Smart Menu Systems',
-        splashSub: 'Towards a more professional and seamless digital experience for your business — turn your menu into an installable app saved on your customer’s phone from the very first QR scan.',
+        splashTitle: 'Welcome to OGA NeXxt',
+        splashWelcome: 'Welcome to our digital space—we are delighted to have you here and wish you a smooth, inspiring experience tailored to your business.',
         enterBtn: 'Enter & Explore Platform',
+        connectHubTitle: 'Direct Contact & Official Channels',
+        connectHubSub: 'Reach us instantly or follow our latest work',
+        waCardTitle: 'WhatsApp Direct Chat',
+        fbCardTitle: 'Official Facebook Page',
+        fbCardSub: 'Facebook Page — OGA NeXxt',
+        ttCardTitle: 'TikTok Account',
+        igCardTitle: 'Instagram Account',
         brandTagline: 'Smart Menu Systems',
         tab1: '1. Service Identity',
         tab2: '2. App & Menu Features',
