@@ -627,7 +627,10 @@
     .pwa-spotlight h3 { font-size: 1.4rem; font-weight: 900; color: #6ee7b7; margin-bottom: 0.45rem; }
     .pwa-spotlight p { max-width: 720px; color: #e2e8f0; }
 
-    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.75rem; margin-bottom: 2.5rem; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.65rem; margin-bottom: 2.5rem; }
+    .price-card.annual { border: 2px solid var(--accent-cyan); box-shadow: 0 18px 44px rgba(0, 225, 255, 0.16); }
+    .badge-cyan { background: rgba(0, 225, 255, 0.18); color: var(--accent-cyan); }
+    .old-price-strike { text-decoration: line-through; color: #94a3b8; font-size: 1.05rem; font-weight: 700; margin-inline-start: 0.45rem; }
 
     .price-card {
       background: var(--bg-card);
@@ -1037,6 +1040,31 @@
               اطلب الباقة الثانية المتكاملة
             </button>
           </div>
+          <div class="price-card annual">
+            <span class="price-badge badge-cyan" data-i18n="pkg3Badge">🗓️ باقة الاشتراك السنوي | كل المميزات + داش بورد + دعم فني</span>
+            <div class="price-amount">
+              <span data-i18n="pkg3Price">1,599 جنيه / سنوياً</span>
+              <span class="old-price-strike" data-i18n="pkg3OldPrice">2,500 جنيه</span>
+            </div>
+            <div class="price-note" data-i18n="pkg3Note">اشتراك سنوي شامل جميع المميزات ولوحة التحكم والدعم الفني</div>
+
+            <ul class="check-list">
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg3F1">تشمل جميع مميزات المنيو الإلكتروني بالكامل.</span></li>
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg3F2">لوحة تحكم (Dashboard) متكاملة لإدارة الأصناف والأسعار والأقسام بنفسك.</span></li>
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg3F3">دعم فني مستمر طوال فترة الاشتراك السنوي.</span></li>
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg3F4">رابط إلكتروني خاص + كود QR جاهز للطباعة + تثبيت كتطبيق على الهاتف.</span></li>
+              <li><span class="check-icon">✔</span> <span data-i18n="pkg3F5">سعر مخفض 1,599 جنيه بدلاً من 2,500 جنيه سنوياً.</span></li>
+            </ul>
+
+            <div class="policy-box">
+              <strong data-i18n="pkg3PolicyTitle">🛡️ نظام الاشتراك السنوي:</strong><br/>
+              <span data-i18n="pkg3PolicyDesc">اشتراك سنوي بـ 1,599 جنيهاً بدلاً من 2,500 جنيه يشمل الداش بورد، كافة المميزات، والدعم الفني المستمر.</span>
+            </div>
+
+            <button class="btn-primary" style="width:100%; justify-content:center;" onclick="selectPackageOrder('باقة الاشتراك السنوي - كل المميزات + داش بورد + دعم فني (1,599 ج.م/سنوياً بدلاً من 2,500 ج.م)')" data-i18n="orderPkg3">
+              اطلب الاشتراك السنوي (1,599 ج.م)
+            </button>
+          </div>
         </div>
 
         <div class="table-wrap">
@@ -1046,19 +1074,21 @@
                 <th data-i18n="compCol1">التفاصيل والمميزات</th>
                 <th data-i18n="compCol2">الباقة الأولى (المنيو فقط)</th>
                 <th data-i18n="compCol3">الباقة الثانية (المنيو + الداش بورد)</th>
+                <th data-i18n="compCol4">الاشتراك السنوي (1,599 ج.م بدل 2,500)</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td data-i18n="compR1">تصميم وتنفيذ المنيو</td><td>✔</td><td>✔</td></tr>
-              <tr><td data-i18n="compR2">رابط إلكتروني مخصص</td><td>✔</td><td>✔</td></tr>
-              <tr><td data-i18n="compR3">QR Code جاهز للطباعة</td><td>✔</td><td>✔</td></tr>
-              <tr><td data-i18n="compR4">إدارة الأصناف بنفسك</td><td>✖</td><td>✔</td></tr>
-              <tr><td data-i18n="compR5">تعديل الأسعار بنفسك</td><td>✖</td><td>✔</td></tr>
-              <tr><td data-i18n="compR6">إدارة الأقسام بنفسك</td><td>✖</td><td>✔</td></tr>
+              <tr><td data-i18n="compR1">تصميم وتنفيذ المنيو</td><td>✔</td><td>✔</td><td>✔</td></tr>
+              <tr><td data-i18n="compR2">رابط إلكتروني مخصص</td><td>✔</td><td>✔</td><td>✔</td></tr>
+              <tr><td data-i18n="compR3">QR Code جاهز للطباعة</td><td>✔</td><td>✔</td><td>✔</td></tr>
+              <tr><td data-i18n="compR4">إدارة الأصناف بنفسك</td><td>✖</td><td>✔</td><td>✔</td></tr>
+              <tr><td data-i18n="compR5">تعديل الأسعار بنفسك</td><td>✖</td><td>✔</td><td>✔</td></tr>
+              <tr><td data-i18n="compR6">إدارة الأقسام بنفسك</td><td>✖</td><td>✔</td><td>✔</td></tr>
               <tr>
-                <td data-i18n="compR7">صيانة التعديلات البسيطة</td>
-                <td data-i18n="compR7V1">150 جنيهاً للمرة</td>
-                <td data-i18n="compR7V2">بدون رسوم عند تنفيذها بنفسك</td>
+                <td data-i18n="compR7">لوحة التحكم والدعم الفني</td>
+                <td data-i18n="compR7V1">صيانة 150 جنيهاً للمرة</td>
+                <td data-i18n="compR7V2">داش بورد بدون رسوم تعديل ذاتي</td>
+                <td data-i18n="compR7V3">داش بورد + دعم فني (1,599 ج.م/سنة بدل 2,500)</td>
               </tr>
             </tbody>
           </table>
@@ -1100,6 +1130,7 @@
                 <select id="packageSelect" class="form-control">
                   <option value="الباقة الأولى - المنيو الإلكتروني (3,500 ج.م)" data-i18n="opt1">الباقة الأولى — المنيو الإلكتروني (3,500 جنيه مصري)</option>
                   <option value="الباقة الثانية - المنيو الإلكتروني + لوحة التحكم (8,000 ج.م)" data-i18n="opt2">الباقة الثانية — المنيو الإلكتروني + لوحة التحكم (8,000 جنيه مصري)</option>
+                  <option value="باقة الاشتراك السنوي - كل المميزات + داش بورد + دعم فني (1,599 ج.م/سنوياً بدلاً من 2,500 ج.م)" data-i18n="opt3">الاشتراك السنوي — كل المميزات + داش بورد + دعم فني (1,599 ج.م بدلاً من 2,500 ج.م)</option>
                 </select>
               </div>
 
@@ -1322,6 +1353,21 @@
         lblPackage: 'الباقة المطلوبة',
         opt1: 'الباقة الأولى — المنيو الإلكتروني (3,500 جنيه مصري)',
         opt2: 'الباقة الثانية — المنيو الإلكتروني + لوحة التحكم (8,000 جنيه مصري)',
+        pkg3Badge: '🗓️ باقة الاشتراك السنوي | كل المميزات + داش بورد + دعم فني',
+        pkg3Price: '1,599 جنيه / سنوياً',
+        pkg3OldPrice: '2,500 جنيه',
+        pkg3Note: 'اشتراك سنوي شامل جميع المميزات ولوحة التحكم والدعم الفني',
+        pkg3F1: 'تشمل جميع مميزات المنيو الإلكتروني بالكامل.',
+        pkg3F2: 'لوحة تحكم (Dashboard) متكاملة لإدارة الأصناف والأسعار والأقسام بنفسك.',
+        pkg3F3: 'دعم فني مستمر طوال فترة الاشتراك السنوي.',
+        pkg3F4: 'رابط إلكتروني خاص + كود QR جاهز للطباعة + تثبيت كتطبيق على الهاتف.',
+        pkg3F5: 'سعر مخفض 1,599 جنيه بدلاً من 2,500 جنيه سنوياً.',
+        pkg3PolicyTitle: '🛡️ نظام الاشتراك السنوي:',
+        pkg3PolicyDesc: 'اشتراك سنوي بـ 1,599 جنيهاً بدلاً من 2,500 جنيه يشمل الداش بورد، كافة المميزات، والدعم الفني المستمر.',
+        orderPkg3: 'اطلب الاشتراك السنوي (1,599 ج.م)',
+        compCol4: 'الاشتراك السنوي (1,599 ج.م بدل 2,500)',
+        compR7V3: 'داش بورد + دعم فني (1,599 ج.م/سنة بدل 2,500)',
+        opt3: 'الاشتراك السنوي — كل المميزات + داش بورد + دعم فني (1,599 ج.م بدلاً من 2,500 ج.م)',
         lblNotes: 'تفاصيل إضافية (اختياري)',
         sendWaBtn: 'إرسال الطلب عبر واتساب (01124349186)',
         directTitle: 'بيانات التواصل المباشر',
@@ -1435,6 +1481,21 @@
         lblPackage: 'Selected Package',
         opt1: 'Package 1 — Electronic Menu (3,500 EGP)',
         opt2: 'Package 2 — Electronic Menu + Admin Dashboard (8,000 EGP)',
+        pkg3Badge: '🗓️ Annual Subscription | All Features + Dashboard + Support',
+        pkg3Price: '1,599 EGP / year',
+        pkg3OldPrice: '2,500 EGP',
+        pkg3Note: 'Annual plan including all features, admin dashboard & ongoing technical support',
+        pkg3F1: 'Includes all smart electronic menu features.',
+        pkg3F2: 'Full Admin Dashboard to manage items, prices & categories yourself.',
+        pkg3F3: 'Ongoing technical support throughout your annual subscription.',
+        pkg3F4: 'Dedicated link + print-ready QR code + home screen app installation.',
+        pkg3F5: 'Special annual rate: 1,599 EGP instead of 2,500 EGP.',
+        pkg3PolicyTitle: '🛡️ Annual Plan Details:',
+        pkg3PolicyDesc: 'Annual subscription at 1,599 EGP instead of 2,500 EGP including dashboard, all features, and technical support.',
+        orderPkg3: 'Order Annual Plan (1,599 EGP)',
+        compCol4: 'Annual Plan (1,599 vs 2,500 EGP)',
+        compR7V3: 'Dashboard + Support (1,599 vs 2,500 EGP/yr)',
+        opt3: 'Annual Plan — All Features + Dashboard + Support (1,599 EGP instead of 2,500 EGP)',
         lblNotes: 'Additional Notes (Optional)',
         sendWaBtn: 'Send Order via WhatsApp (01124349186)',
         directTitle: 'Direct Contact Information',

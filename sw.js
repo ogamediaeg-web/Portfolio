@@ -1,4 +1,4 @@
-const CACHE_NAME = 'oga-nexxt-v4';
+const CACHE_NAME = 'oga-nexxt-v5';
 const ASSETS = [
   './',
   './index.html',
